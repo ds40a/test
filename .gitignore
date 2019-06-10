@@ -1,9 +1,11 @@
 /tmp
 /app/web/upload/image/*
-!/app/web/upload/image
+!/app/web/upload/image/nouser.svg
+!/app/web/upload/image/
 /app/logs/*
 /app/sessions/*
 /logs
 /.idea/
 !.gitignore
 !.env
+!.gitkeep
