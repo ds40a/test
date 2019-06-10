@@ -1,0 +1,97 @@
+version: "2.0"
+
+services:
+
+  nginx:
+    env_file: .env
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        - DOCKER_GROUP_ID
+        - DOCKER_GROUP_NAME
+        - DOCKER_USER_ID
+        - DOCKER_USER_NAME
+    image:          "${PREFIX}web_app"
+    container_name: "${PREFIX}web_app"
+    hostname: "${PREFIX}web_app"
+    depends_on:
+      - php
+      - mysql
+    links:
+      - php
+#    ports:
+#      - 80:80
+    volumes:
+      - ./app:/var/www
+      - ./logs/nginx:/var/log/nginx
+      - ./docker/nginx/configs/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/configs/test.conf:/etc/nginx/sites-enabled/test.conf
+    working_dir: /var/www
+    environment:
+      - TERM=xterm
+    networks:
+      test_net:
+        ipv4_address: "${INTERNAL_NET}.1"
+
+  php:
+    env_file: .env
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        - DOCKER_GROUP_ID
+        - DOCKER_GROUP_NAME
+        - DOCKER_USER_ID
+        - DOCKER_USER_NAME
+    image:          "${PREFIX}php"
+#    image:          "gym_php"
+    container_name: "${PREFIX}php"
+    hostname:       "${PREFIX}php"
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+      - ./docker/php/configs/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+      - ./docker/php/configs/custom_xdebug.ini:/usr/local/etc/php/conf.d/x99_custom_xdebug.ini
+      - ./docker/php/scripts/docker-entrypoint_php.sh:/entrypoint.sh
+    user: ${DOCKER_USER_NAME}
+    environment:
+      - TERM=xterm
+    extra_hosts:
+      - "gym.web_app:${INTERNAL_NET}.1"
+      - "mysql:${INTERNAL_NET}.2"
+    networks:
+      test_net:
+        ipv4_address: "${INTERNAL_NET}.3"
+
+  mysql:
+      env_file: .env
+      image:          "mysql:latest"
+      container_name: "${PREFIX}mysql"
+      hostname:       "${PREFIX}mysql"
+      environment:
+          - MYSQL_ROOT_PASSWORD=toor
+          - MYSQL_USER=test
+          - MYSQL_PASSWORD=test
+          - MYSQL_DATABASE=test
+      volumes:
+          - ./init_db:/docker-entrypoint-initdb.d
+      command: "--default_authentication_plugin=mysql_native_password"
+      networks:
+          test_net:
+              ipv4_address: "${INTERNAL_NET}.2"
+
+networks:
+  test_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: "${INTERNAL_NET}.0/24"
+          gateway: "${INTERNAL_NET}.100"

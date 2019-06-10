@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <?php include 'head.html' ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+</head>
+<body>
+    <div class="container" style="padding-top: 10px;">
+        <?php if ($error) { ?>
+        <div class="alert alert-danger alert-dismissible" role="alert"">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong><?=$view->translate('Sorry!') ?> </strong><?=$error?>
+        </div>
+        <?php } ?>
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form id="registration" name='registration' role="form" method="post" enctype="multipart/form-data" data-toggle="validator" role="form" >
+                <h2 style="text-align: center; padding-bottom: 18px; padding-top: 18px; background-color: aliceblue; "><?= $view->translate('Please Sign Up')?></h2>
+                <div class="form-group">
+                    <label for="email"><?= $view->translate('Email Address') ?></label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="form-control input-lg"
+                        required
+                        data-required-error="<?= $view->translate('Please fill this field') ?>"
+                        data-type-error="<?= $view->translate('Invalid email') ?>"
+                        placeholder='<?= $view->translate("You email") ?>'
+                        value="<?= $email ?>"
+                        tabindex="5">
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                class="form-control input-lg"
+                                required
+                                data-minlength="6"
+                                data-required-error="<?= $view->translate('Please fill this field') ?>"
+                                data-minlength-error="<?= $view->translate('Password length should be >= 6') ?>"
+                                placeholder='<?= $view->translate("Password") ?>'
+                                tabindex="6"
+                            >
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <input
+                                type="password"
+                                name="password_confirmation"
+                                id="password_confirmation"
+                                class="form-control input-lg"
+                                required
+                                data-match="#password"
+                                data-minlength="6"
+                                data-match-error="<?= $view->translate('Passwords is not match') ?>"
+                                data-required-error="<?= $view->translate('Please fill this field') ?>"
+                                data-minlength-error="<?= $view->translate('Password length should be >= 6') ?>"
+                                placeholder='<?= $view->translate("Confirm Password") ?>'
+                                tabindex="7"
+                            >
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label for="name"><?= $view->translate('Name') ?></label>
+                            <input
+                                type="text"
+                                name="name"
+                                id="name"
+                                class="form-control input-lg"
+                                required
+                                data-required-error="<?= $view->translate('Please fill this field') ?>"
+                                placeholder='<?= $view->translate("Enter you name") ?>'
+                                title="<?= $view->translate('Name') ?>"
+                                value="<?= $name ?>"
+                                tabindex="1">
+                            <div class="help-block with-errors"></div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label for="lang_selector"><?= $view->translate('Interface language') ?></label>
+                            <select id="lang_selector" class="form-control" name="lang" onchange="selectLang(this)">
+                                <?php $ifaceLang = $view->get('translator')->getLang() ?>
+                                <option <?= $ifaceLang == 'en' ? 'selected' : '' ?> value="en">English (EN)</option>
+                                <option <?= $ifaceLang == 'ru' ? 'selected' : '' ?> value="ru">Русский (RU)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class='btn btn-primary' style="width: 100%">
+                            <?= $view->translate('Choose avatar...') ?>
+                            <input type="file"
+                               id="image"
+                               tabindex="-1"
+                               name="file_avatar"
+                               data-filesize="3000"
+                               data-filetype="image/gif,image/png,image/jpg,image/jpeg"
+                               style="display: none"
+                               onchange="onSelectFile(this)"
+                            >
+                        </label>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-4">
+                        <img id="preview" style="height: 200px; margin-bottom: 1em; cursor: pointer;" src="/upload/image/nouser.svg" alt="your image" onclick="document.getElementById('image').value = ''; this.src=''; document.getElementById('preview').src='/upload/image/nouser.svg'"/>
+                    </div>
+                </div>
+                <input type="hidden" name="csrfToken" value="<?= $view->get('session')->getcsrfToken() ?>"
+                <div class="row">
+                    <input type="submit" value='<?= $view->translate("Register") ?>' class="btn btn-primary btn-block btn-lg" tabindex="8">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#registration').validator({
+            custom: {
+                filesize: function (el) {
+                    var maxKilobytes = el.data('filesize') * 1024;
+                    if (el[0].files[0].size > maxKilobytes) {
+                        return "<?= $view->translate("Maximum file size reached.") ?>";
+                    }
+                },
+
+                filetype: function (el) {
+                    var acceptableTypes = el.data('filetype').split(',');
+                    var fileType = el[0].files[0].type;
+
+                    if (-1 === $.inArray(fileType, acceptableTypes)) {
+                        return '<?= $view->translate("Unsupported file type") ?>' + ' "' + fileType + '"';
+                    }
+                }
+            }
+        });
+
+        function onSelectFile(that) {
+            var el = $('#image');
+            var acceptableTypes = el.data('filetype').split(',');
+            var fileType = el.prop('files')[0].type;
+            if (-1 !== $.inArray(fileType, acceptableTypes)) {
+                // el.attr('src', window.URL.createObjectURL(el.prop('files')[0]));
+                document.getElementById('preview').src = window.URL.createObjectURL(that.files[0])
+                // $('#preview').show();
+            }
+        }
+
+        function selectLang(sel) {
+            window.location.href = "<?= $view->get('router')->getUrlByRouteName('user.register')?>?lang=" + sel.value;
+        }
+
+    </script>
+
+</body>
+</html>

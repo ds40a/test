@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <?php include 'head.html'; ?>
+    <body>
+        <div class="container" style="padding-top: 10px;">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="<?= $user->profile_image ?> " height="200px" style="position: absolute; right: 0">
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <span style="font-weight: bold"> <?= $view->translate('Name')?> : </span><?= $user->name ?></span>
+                    </div>
+                    <div>
+                        <span style="font-weight: bold"><?= $view->translate('Email Address')?> : </span><?= $user->email ?>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-4"">
+                    <a class="btn btn-primary" href="<?= $view->get('router')->getUrlByRouteName('user.logout') ?>">
+                        <?= $view->translate('Logout') ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

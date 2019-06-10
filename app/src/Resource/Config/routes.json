@@ -1,0 +1,22 @@
+{
+  "app.index": {
+    "route": "/",
+    "controller": "Test\\Controller\\Main:indexAction"
+  },
+  "user.login": {
+    "route": "/login",
+    "controller": "Test\\Controller\\User:loginAction"
+  },
+  "user.logout": {
+    "route": "/logout",
+    "controller": "Test\\Controller\\User:logoutAction"
+  },
+  "user.register": {
+    "route": "/register",
+    "controller": "Test\\Controller\\User:registerAction"
+  },
+  "user.validate": {
+    "route": "/validate",
+    "controller": "Test\\Controller\\User:validateAction"
+  }
+}
