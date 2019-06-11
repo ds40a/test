@@ -8,6 +8,7 @@ namespace Test\lib;
  */
 class Session extends ContainerAware
 {
+    /** @var bool  */
     private $started;
 
     /**
@@ -29,6 +30,9 @@ class Session extends ContainerAware
         }
     }
 
+    /**
+     * void
+     */
     public function refreshCsrfToken()
     {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -60,7 +64,7 @@ class Session extends ContainerAware
     }
 
     /**
-     * @return null|integer
+     * @return string
      */
     public function getUserLang()
     {
@@ -78,7 +82,7 @@ class Session extends ContainerAware
     }
 
     /**
-     * @param $id
+     * void
      */
     public function unSetUser()
     {
@@ -94,6 +98,12 @@ class Session extends ContainerAware
         return $_SESSION['csrf_token'];
     }
 
+    /**
+     * @param string $enteredPassword
+     * @param string $password
+     *
+     * @return bool
+     */
     public function checkPassword($enteredPassword, $password)
     {
         return \password_verify($enteredPassword, $password);

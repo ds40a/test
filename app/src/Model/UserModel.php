@@ -10,6 +10,9 @@ use Test\lib\Model;
  */
 class UserModel extends Model
 {
+    /**
+     * @return string
+     */
     public function getTableName()
     {
         return 'user';

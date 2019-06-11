@@ -23,6 +23,9 @@ class Response extends ContainerAware
         $this->responseCode = $responseCode;
     }
 
+    /**
+     * void
+     */
     public function send()
     {
         echo $this->content;

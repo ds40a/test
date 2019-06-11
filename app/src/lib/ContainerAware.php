@@ -1,11 +1,6 @@
 <?php
-/**
- * Project app.
- * User: ds40a
- * Date: 30.05.19
- * Time: 14:24
- */
 
+/**  */
 namespace Test\lib;
 
 /**

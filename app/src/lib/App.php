@@ -59,7 +59,7 @@ class App
      *
      * @return Response
      */
-    public function handle(Request $request)
+    public function handle($request)
     {
         $router = new Router($request);
         $router->setContainer($this->serviceContainer);
@@ -84,24 +84,33 @@ class App
         return new Response($translator->trans('Sorry! Requested page doesn\'t found' ), 404);
     }
 
+    /**
+     *  Finalize application
+     */
     public function close()
     {
-        $this->get('session')->close();
+        if ($this->serviceContainer->has('session')) {
+            $this->get('session')->close();
+        }
     }
 
     /**
     * @param \Exception|\Throwable $exception
     * @param array                 $error
     */
-    public function exceptionHandler($exception, array $error = null)
+    public function exceptionHandler($exception, $error = null)
     {
         ob_get_clean();
+        $this->close();
         $this->serviceContainer->get('logger')->exception($exception->getMessage());
         header(' 500 Internal Server Error', true, 500);
         echo "Internal app error";
         exit(0);
     }
 
+    /**
+     * @return string
+     */
     public function getRootDir()
     {
         return   $this->thisDir.'/..';
@@ -163,6 +172,9 @@ class App
         return $this->appConfig;
     }
 
+    /**
+     * @return string
+     */
     public function getTranslationsDir()
     {
         return $this->thisDir.'/../Resource/translations';

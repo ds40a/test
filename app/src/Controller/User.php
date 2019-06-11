@@ -15,7 +15,7 @@ class User extends Controller
      *
      * @return string
      */
-    public function loginAction(Request $request)
+    public function loginAction($request)
     {
         if ($this->get('session')->isUserLogged()) {
             if ($referer = $request->getReferer()) {
@@ -77,7 +77,7 @@ class User extends Controller
      *
      * @return string
      */
-    public function registerAction(Request $request)
+    public function registerAction($request)
     {
         if ($this->get('session')->isUserLogged()) {
             if ($referer = $request->getReferer()) {

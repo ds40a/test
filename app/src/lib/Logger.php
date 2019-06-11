@@ -8,12 +8,16 @@ namespace Test\lib;
  */
 class Logger extends ContainerAware
 {
+    /** @var string */
     const FORMAT_STR = "[%s] %s %s: %s\n";
 
+    /** @var string */
     private $filename = 'app.log';
 
+    /** @var string */
     private $loggerName = 'app';
 
+    /** @var string */
     private $destination;
 
     /**
@@ -27,8 +31,8 @@ class Logger extends ContainerAware
     }
 
     /**
-     * @param $messageType
-     * @param $message
+     * @param string $messageType
+     * @param string $message
      */
     public function log($messageType, $message)
     {
@@ -56,7 +60,7 @@ class Logger extends ContainerAware
     }
 
     /**
-     * @param $message
+     * @param string $message
      */
     public function info($message)
     {
@@ -64,7 +68,7 @@ class Logger extends ContainerAware
     }
 
     /**
-     * @param $message
+     * @param string $message
      */
     public function debug($message)
     {
@@ -72,7 +76,7 @@ class Logger extends ContainerAware
     }
 
     /**
-     * @param $message
+     * @param string $message
      */
     public function error($message)
     {
@@ -80,7 +84,7 @@ class Logger extends ContainerAware
     }
 
     /**
-     * @param $message
+     * @param string $message
      */
     public function exception($message)
     {

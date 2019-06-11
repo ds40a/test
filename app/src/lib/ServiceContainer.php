@@ -1,11 +1,6 @@
 <?php
-/**
- * Project app.
- * User: ds40a
- * Date: 26.05.19
- * Time: 13:11
- */
 
+/**  */
 namespace Test\lib;
 
 /**
@@ -13,6 +8,7 @@ namespace Test\lib;
  */
 class ServiceContainer
 {
+    /** @var array  */
     private $services = [];
 
     /**
@@ -41,5 +37,15 @@ class ServiceContainer
     public function set($key, $instance)
     {
         return $this->services[$key] = $instance;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function has($key)
+    {
+        return \array_key_exists($key, $this->services);
     }
 }

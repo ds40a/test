@@ -1,11 +1,17 @@
 <?php
 
+/**  */
 namespace Test\lib;
 
+/**
+ * Class Router
+ */
 class Router extends ContainerAware
 {
+    /** @var Request  */
     private $request;
 
+    /** @var array */
     private $config;
 
     /**
@@ -13,7 +19,7 @@ class Router extends ContainerAware
      *
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct($request)
     {
         $this->request = $request;
     }

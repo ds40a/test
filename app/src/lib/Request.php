@@ -5,16 +5,22 @@ namespace Test\lib;
 
 class Request extends ContainerAware
 {
+    /** @var array  */
     private $get;
 
+    /** @var array  */
     private $post;
 
+    /** @var array  */
     private $cookies;
 
+    /** @var array  */
     private $files;
 
+    /** @var array  */
     private $server;
 
+    /** @var string */
     private $controllerClass;
 
     /**
@@ -35,6 +41,9 @@ class Request extends ContainerAware
         $this->server = $server;
     }
 
+    /**
+     * @return string
+     */
     public function getRequestUri()
     {
         return \explode('?', $this->server['REQUEST_URI'])[0];

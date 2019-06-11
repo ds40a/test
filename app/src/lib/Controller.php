@@ -17,7 +17,7 @@ class Controller extends ContainerAware
      *
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct($request)
     {
         $this->request = $request;
     }
@@ -88,6 +88,11 @@ class Controller extends ContainerAware
         exit();
     }
 
+    /**
+     * @param string $key
+     *
+     * @return string
+     */
     public function translate($key)
     {
         return $this->get('translator')->trans($key);

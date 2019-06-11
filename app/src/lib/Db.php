@@ -1,11 +1,6 @@
 <?php
-/**
- * Project app.
- * User: ds40a
- * Date: 26.05.19
- * Time: 13:14
- */
 
+/**  */
 namespace Test\lib;
 
 /**
@@ -15,8 +10,18 @@ class Db
 {
     const CONNECTION_STRING_FORMAT = 'mysql:host=%s;port=%d;dbname=%s';
 
+    /** @var \PDO  */
     private $connection;
 
+    /**
+     * Db constructor.
+     *
+     * @param string  $host
+     * @param integer $port
+     * @param string  $dbName
+     * @param string  $user
+     * @param string  $psw
+     */
     public function __construct($host, $port, $dbName, $user, $psw)
     {
         $this->host = $host;
@@ -36,6 +41,9 @@ class Db
         );
     }
 
+    /**
+     * @return \PDO
+     */
     public function getConnection()
     {
         return $this->connection;

@@ -11,8 +11,12 @@ abstract class Model
     /** @var \PDO */
     public static $connection;
 
+    /** @var object */
     protected $object;
 
+    /**
+     * @return string
+     */
     abstract public function getTableName();
 
     /**
@@ -31,6 +35,9 @@ abstract class Model
         return $this->object;
     }
 
+    /**
+     * @param null $object
+     */
     public function store($object = null)
     {
         if (null === $object) {
@@ -140,10 +147,5 @@ abstract class Model
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
-    }
-
-    public function create()
-    {
-
     }
 }
